@@ -72,6 +72,8 @@ abs_array_set_i_j(abs_array_t *arr, int i, int j, void *val)
 void
 abs_array_print(abs_array_t *arr)
 {
+	//Research function pointers
+	//arr->print_fp;...?
     return;
 }
 
