@@ -48,6 +48,7 @@ void abs_array_destroy(abs_array_t *arr);
 
 /*
  * Accessor functions.
+ * NOTE: get_dims returns { 0, 0 } on error
  */
 dims_t abs_array_get_dims(abs_array_t *arr);
 void abs_array_get_i_j(abs_array_t *arr, int i, int j, void *ret);

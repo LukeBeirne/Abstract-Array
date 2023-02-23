@@ -58,9 +58,6 @@ main(int argc, char **argv)
 	 */
 	dims_t arr_dims = abs_array_get_dims(arr);
 	
-	//Printf testing
-	printf("arr_dims.x = %d\narr_dims.y = %d\n", arr_dims.x, arr_dims.y);
-	
 	/*
 	 * Setting values in array with rand().
 	 */
