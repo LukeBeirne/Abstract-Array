@@ -56,7 +56,7 @@ void abs_array_get_i_j(abs_array_t *arr, int i, int j, void *ret);
 /*
  * Mutator functions.
  * NOTE: The array makes copies of all data passed to set_i_j. So it is the
- * users responsibility to free any val set that was dynamically alloated!
+ * users responsibility to free any val set that was dynamically allocated!
  */
 void abs_array_set_i_j(abs_array_t *arr, int i, int j, void *val);
 

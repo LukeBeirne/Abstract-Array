@@ -30,8 +30,11 @@ abs_array_destroy(abs_array_t *arr)
 		fprintf(stderr, "Invalid array into destroy function");
 		return;
 	}
-	//first frees char *arr in array struct
-	//before freeing the array struct itself
+	/*
+	 * first frees char *arr in array struct
+	 * using the free function pointer in the struct
+	 * before freeing the array struct itself
+	 */
 	arr->free_fp(arr->arr);
 	free(arr);
     return;
@@ -84,7 +87,7 @@ abs_array_set_i_j(abs_array_t *arr, int i, int j, void *val)
 		return;
 	}
 	dims_t dims = abs_array_get_dims(arr);
-	arr->arr[i*dims.y + j] = (char)val;
+	arr->arr[i*dims.y + j] = *(char *)val;
     return;
 }
 
