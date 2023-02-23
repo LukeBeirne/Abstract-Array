@@ -30,6 +30,10 @@ abs_array_destroy(abs_array_t *arr)
 		fprintf(stderr, "Invalid array into destroy function");
 		return;
 	}
+	if(arr->free_fp == NULL) {
+		fprintf(stderr, "Invalid free function in array struct");
+		return;
+	}
 	/*
 	 * first frees char *arr in array struct
 	 * using the free function pointer in the struct
@@ -70,6 +74,8 @@ abs_array_get_i_j(abs_array_t *arr, int i, int j, void *ret)
 		fprintf(stderr, "Invalid array into get_i_j function");
 		return;
 	}
+	dims_t dims = abs_array_get_dims(arr);
+	ret = &arr->arr[i*dims.y + j];
     return;
 }
 
@@ -104,8 +110,22 @@ abs_array_print(abs_array_t *arr)
 		fprintf(stderr, "Invalid array into print function");
 		return;
 	}
-	//Research function pointers
-	arr->print_fp(arr->arr);
+	if(arr->print_fp == NULL) {
+		fprintf(stderr, "Invalid print function in array struct");
+		return;
+	}
+	
+	/*
+	 * iterates through array and
+	 * prints each element using
+	 * print function pointer in struct
+	 */
+	dims_t dims = abs_array_get_dims(arr);
+	for (int i = 0; i < dims.x; i++) {
+		for (int j = 0; j < dims.y; j++) {
+			arr->print_fp(arr);			
+		}
+	}
     return;
 }
 
@@ -117,5 +137,10 @@ abs_array_apply_func(abs_array_t *arr, apply_func apply, void *priv)
 		fprintf(stderr, "Invalid array into apply function");
 		return;
 	}
+	if(apply == NULL) {
+		fprintf(stderr, "Invalid apply function");
+		return;
+	}
+	
     return;
 }
