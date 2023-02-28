@@ -64,7 +64,7 @@ main(int argc, char **argv)
 	for (int i = 0; i < arr_dims.x; i++) {
 		for (int j = 0; j < arr_dims.y; j++) {
 			int val = rand() % 100;
-			abs_array_set_i_j(arr, i, j, &val); 
+			abs_array_set_i_j(arr, i, j, &val);
 		}
 	}
 

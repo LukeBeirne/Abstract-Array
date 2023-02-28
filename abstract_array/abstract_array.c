@@ -27,18 +27,21 @@ abs_array_destroy(abs_array_t *arr)
 {
 	//error checking
 	if(arr == NULL) {
-		fprintf(stderr, "Invalid array into destroy function");
+		fprintf(stderr, "Invalid array into destroy function\n");
 		return;
 	}
 	if(arr->free_fp == NULL) {
-		fprintf(stderr, "Invalid free function in array struct");
+		fprintf(stderr, "Invalid free function in array struct\n");
 		return;
 	}
 	/*
 	 * first frees char *arr in array struct
 	 * using the free function pointer in the struct
 	 * before freeing the array struct itself
+	 * 
+	 * 3 mallocs, 1 free?
 	 */
+	//free(arr->arr);
 	arr->free_fp(arr->arr);
 	free(arr);
     return;
@@ -54,7 +57,7 @@ abs_array_get_dims(abs_array_t *arr)
 {
 	//error checking
 	if(arr == NULL) {
-		fprintf(stderr, "Invalid array into get_dims function");
+		fprintf(stderr, "Invalid array into get_dims function\n");
 		dims_t dims = { 0, 0 };
 		return(dims);
 	}
@@ -71,11 +74,11 @@ abs_array_get_i_j(abs_array_t *arr, int i, int j, void *ret)
 {
 	//error checking
 	if(arr == NULL) {
-		fprintf(stderr, "Invalid array into get_i_j function");
+		fprintf(stderr, "Invalid array into get_i_j function\n");
 		return;
 	}
 	dims_t dims = abs_array_get_dims(arr);
-	ret = &arr->arr[i*dims.y + j];
+	*(int *)ret = arr->arr[i*dims.y + j];
     return;
 }
 
@@ -89,7 +92,7 @@ abs_array_set_i_j(abs_array_t *arr, int i, int j, void *val)
 {
 	//error checking
 	if(arr == NULL) {
-		fprintf(stderr, "Invalid array into set_i_j function");
+		fprintf(stderr, "Invalid array into set_i_j function\n");
 		return;
 	}
 	dims_t dims = abs_array_get_dims(arr);
@@ -107,11 +110,11 @@ abs_array_print(abs_array_t *arr)
 {
 	//error checking
 	if(arr == NULL) {
-		fprintf(stderr, "Invalid array into print function");
+		fprintf(stderr, "Invalid array into print function\n");
 		return;
 	}
 	if(arr->print_fp == NULL) {
-		fprintf(stderr, "Invalid print function in array struct");
+		fprintf(stderr, "Invalid print function in array struct\n");
 		return;
 	}
 	
@@ -123,8 +126,13 @@ abs_array_print(abs_array_t *arr)
 	dims_t dims = abs_array_get_dims(arr);
 	for (int i = 0; i < dims.x; i++) {
 		for (int j = 0; j < dims.y; j++) {
-			arr->print_fp(arr);			
+			int value;
+			void *val = &value;
+			abs_array_get_i_j(arr, i, j, val);
+			arr->print_fp(val);	
+			printf("   ");
 		}
+		printf("\n");
 	}
     return;
 }
@@ -134,12 +142,22 @@ abs_array_apply_func(abs_array_t *arr, apply_func apply, void *priv)
 {
 	//error checking
 	if(arr == NULL) {
-		fprintf(stderr, "Invalid array into apply function");
+		fprintf(stderr, "Invalid array into apply function\n");
 		return;
 	}
 	if(apply == NULL) {
-		fprintf(stderr, "Invalid apply function");
+		fprintf(stderr, "Invalid apply function\n");
 		return;
+	}
+	
+	dims_t dims = abs_array_get_dims(arr);
+	for (int i = 0; i < dims.x; i++) {
+		for (int j = 0; j < dims.y; j++) {
+			int value;
+			void *val = &value;
+			abs_array_get_i_j(arr, i, j, val);
+			apply(val, priv);
+		}
 	}
 	
     return;
