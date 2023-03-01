@@ -61,8 +61,10 @@ abs_array_get_dims(abs_array_t *arr)
 		dims_t dims = { 0, 0 };
 		return(dims);
 	}
-	//creates a dims struct to store
-	//x and y before returning it
+	/*
+	 * creates a dims struct to store
+	 * x and y before returning it
+	 */
 	dims_t dims;
 	dims.x = arr->dims.x;
 	dims.y = arr->dims.y;
@@ -77,6 +79,11 @@ abs_array_get_i_j(abs_array_t *arr, int i, int j, void *ret)
 		fprintf(stderr, "Invalid array into get_i_j function\n");
 		return;
 	}
+	/*
+	 * grabs dims for equation
+	 * before grabbing the desired
+	 * value from array
+	 */
 	dims_t dims = abs_array_get_dims(arr);
 	*(int *)ret = arr->arr[i*dims.y + j];
     return;
@@ -95,6 +102,13 @@ abs_array_set_i_j(abs_array_t *arr, int i, int j, void *val)
 		fprintf(stderr, "Invalid array into set_i_j function\n");
 		return;
 	}
+	/*
+	 * grabs dims for equation
+	 * 
+	 * casts void * as char * for
+	 * char array before setting
+	 * the appropriate value in array
+	 */
 	dims_t dims = abs_array_get_dims(arr);
 	arr->arr[i*dims.y + j] = *(char *)val;
     return;
@@ -149,10 +163,16 @@ abs_array_apply_func(abs_array_t *arr, apply_func apply, void *priv)
 		fprintf(stderr, "Invalid apply function\n");
 		return;
 	}
-	
+	//grabs dims for use in both for loops
 	dims_t dims = abs_array_get_dims(arr);
 	for (int i = 0; i < dims.x; i++) {
 		for (int j = 0; j < dims.y; j++) {
+			/*
+			 * creates int and ptr to int
+			 * for get_i_j function to use
+			 * 
+			 * uses val for apply function
+			 */
 			int value;
 			void *val = &value;
 			abs_array_get_i_j(arr, i, j, val);
