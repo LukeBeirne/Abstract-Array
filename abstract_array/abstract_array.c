@@ -142,10 +142,9 @@ abs_array_print(abs_array_t *arr)
 	 * print function pointer in struct
 	 */
 	dims_t dims = abs_array_get_dims(arr);
+	char val[arr->type_size];
 	for (int i = 0; i < dims.x; i++) {
 		for (int j = 0; j < dims.y; j++) {
-			int value;
-			void *val = &value;
 			abs_array_get_i_j(arr, i, j, val);
 			arr->print_fp(val);	
 			printf("   ");
@@ -169,6 +168,7 @@ abs_array_apply_func(abs_array_t *arr, apply_func apply, void *priv)
 	}
 	//grabs dims for use in both for loops
 	dims_t dims = abs_array_get_dims(arr);
+	char val[arr->type_size];
 	for (int i = 0; i < dims.x; i++) {
 		for (int j = 0; j < dims.y; j++) {
 			/*
@@ -177,8 +177,6 @@ abs_array_apply_func(abs_array_t *arr, apply_func apply, void *priv)
 			 * 
 			 * uses val for apply function
 			 */
-			int value;
-			void *val = &value;
 			abs_array_get_i_j(arr, i, j, val);
 			apply(val, priv);
 		}
