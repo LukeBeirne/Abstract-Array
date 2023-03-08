@@ -31,7 +31,8 @@ abs_array_destroy(abs_array_t *arr)
 		return;
 	}
 	if(arr->free_fp == NULL) {
-		fprintf(stderr, "Invalid free function in array struct\n");
+		free(arr->arr);
+		free(arr);
 		return;
 	}
 	/*
@@ -41,8 +42,9 @@ abs_array_destroy(abs_array_t *arr)
 	 * 
 	 * 3 mallocs, 1 free?
 	 */
-	//free(arr->arr);
+	 //free each element iteratively
 	arr->free_fp(arr->arr);
+	free(arr->arr);
 	free(arr);
     return;
 }
@@ -85,7 +87,8 @@ abs_array_get_i_j(abs_array_t *arr, int i, int j, void *ret)
 	 * value from array
 	 */
 	dims_t dims = abs_array_get_dims(arr);
-	*(int *)ret = arr->arr[i*dims.y + j];
+	//ret = (void *)(arr->arr[(i*dims.y + j)*arr->type_size]);
+	memcpy(ret, arr->arr + (i*dims.y + j)*arr->type_size, arr->type_size);
     return;
 }
 
@@ -110,7 +113,8 @@ abs_array_set_i_j(abs_array_t *arr, int i, int j, void *val)
 	 * the appropriate value in array
 	 */
 	dims_t dims = abs_array_get_dims(arr);
-	arr->arr[i*dims.y + j] = *(char *)val;
+	//arr->arr[(i*dims.y + j)*arr->type_size] = *(char *)val;
+	memcpy(arr->arr + (i*dims.y + j)*arr->type_size, val, arr->type_size);
     return;
 }
 
